@@ -1,18 +1,21 @@
 if messages.errors
-  .alert.alert-danger.fade.in
+  .alert.alert-dismissible.alert-danger.fade.in
     button.close(type='button', data-dismiss='alert')
       i.far.fa-times-circle
+    alert-heading Error
     for error in messages.errors
-      div= error.msg
+      div.mb-0= error.msg
 if messages.info
-  .alert.alert-info.fade.in
+  .alert.alert-dismissible.alert-info.fade.in
     button.close(type='button', data-dismiss='alert')
       i.far.fa-times-circle
+    alert-heading Info
     for info in messages.info
       div= info.msg
 if messages.success
-  .alert.alert-success.fade.in
+  .alert.alert-dismissible.alert-success.fade.in
     button.close(type='button', data-dismiss='alert')
       i.far.fa-times-circle
+    alert-heading Success
     for success in messages.success
       div= success.msg
