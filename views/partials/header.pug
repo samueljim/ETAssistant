@@ -1,0 +1,36 @@
+nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
+  a.navbar-brand(href='#') Tanda Hack
+  button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarColor01', aria-controls='navbarColor01', aria-expanded='false', aria-label='Toggle navigation')
+    span.navbar-toggler-icon
+  #navbarColor01.collapse.navbar-collapse
+    ul.navbar-nav.mr-auto
+      li.nav-item(class=(title === 'Home') ? 'active' : undefined)
+        a.nav-link(href='/') Home
+          span.sr-only (current)
+      li.nav-item
+        a.nav-link(href='/contact' class=((title === 'Contact') ? 'active' : undefined)) Contact
+      li.nav-item
+        a.nav-link(href='/status') Status
+      li.nav-item
+        a.nav-link(href='#') About
+    ul.nav.navbar-nav.navbar-right
+      if !user
+        li.nav-item(class=(title === 'Login') ? 'active' : undefined)
+          a.nav-link(href='/login') Login
+        li.nav-item(class=(title === 'Create Account') ? 'active' : undefined)
+          a.nav-link(href='/signup') Create Account
+      else
+        li.nav-item.dropdown(class=(title === 'Account Management') ? 'active' : undefined)
+          a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
+            if user.profile.picture
+              img(src=user.profile.picture)
+            else
+              img(src=user.gravatar(60))
+            span= user.profile.name || user.email || user.id
+            i.caret
+          ul.dropdown-menu
+            li
+              a.nav-link(href='/account') My Account
+            li.divider
+            li
+              a.nav-link(href='/logout') Logout
