@@ -19,14 +19,18 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const multer = require('multer');
 
-const upload = multer({ dest: path.join(__dirname, 'uploads') });
+const upload = multer({
+  dest: path.join(__dirname, 'uploads')
+});
 
 console.clear();
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.load({ path: '.env.config' });
+dotenv.load({
+  path: '.env.config'
+});
 
 /**
  * Controllers (route handlers).
@@ -68,13 +72,17 @@ app.use(expressStatusMonitor());
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(expressValidator());
 app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
+  cookie: {
+    maxAge: 1209600000
+  }, // two weeks in milliseconds
   store: new MongoStore({
     url: process.env.MONGODB_URI,
     autoReconnect: true,
@@ -103,7 +111,9 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: 31557600000
+}));
 
 /**
  * Primary app routes.
@@ -126,14 +136,20 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 // app.post('/account/upload', upload.single('myFile'), passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/eta/:mode', etasystemE4.ETAsystem);
 app.get('/eta', etasystemE4.ETAsystem);
+app.post('/eta', etasystemE4.ETAsystem);
 
 
 /**
  * OAuth authentication routes. (Sign in)
  */
-app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/google', passport.authenticate('google', {
+  scope: 'profile email'
+}));
+app.get('/auth/google/callback', passport.authenticate('google', {
+  failureRedirect: '/login'
+}), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 
