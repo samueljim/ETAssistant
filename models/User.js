@@ -9,21 +9,14 @@ const userSchema = new mongoose.Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
 
-  facebook: String,
-  twitter: String,
+  slack: String,
   google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  steam: String,
   tokens: Array,
 
-  profile: {
-    gender: String,
-    location: String,
-    website: String,
-    picture: String
-  }
+  work: String,
+  modeOfTransportation: { type: String, default: 'driving' },
+  tokens: Array,
+  picture: String
 }, { timestamps: true });
 
 /**

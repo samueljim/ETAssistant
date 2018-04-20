@@ -45,14 +45,14 @@ exports.postContact = (req, res) => {
     fromName = req.body.name;
     fromEmail = req.body.email;
   } else {
-    fromName = req.user.profile.name || '';
+    fromName = req.user.name || '';
     fromEmail = req.user.email;
   }
 
   const mailOptions = {
     to: 'me@samuejim.com',
     from: `${fromName} <${fromEmail}>`,
-    subject: 'Contact Form | Tanda Hackathon',
+    subject: 'Contact Form | ETAssistant',
     text: req.body.message
   };
 
