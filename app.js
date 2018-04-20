@@ -34,6 +34,7 @@ dotenv.load({ path: '.env.config' });
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
+const etasystemE4 = require('./controllers/etasystemE4')
 
 /**
  * API keys and Passport configuration.
@@ -125,6 +126,8 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 // app.post('/account/upload', upload.single('myFile'), passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/ETA', etasystemE4.ETAsystem);
+
 
 /**
  * OAuth authentication routes. (Sign in)
