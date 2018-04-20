@@ -96,8 +96,7 @@ passport.use(new GoogleStrategy({
  */
 passport.use(new SlackStrategy({
   clientID: process.env.SLACK_CLIENT_ID,
-clientSecret: process.env.SLACK_SECRET,
-  callbackURL: '/auth/slack/callback',
+  clientSecret: process.env.SLACK_SECRET,
   passReqToCallback: true
 }, (req, accessToken, refreshToken, profile, done) => {
   if (req.user) {

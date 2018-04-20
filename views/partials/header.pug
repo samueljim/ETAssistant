@@ -19,14 +19,14 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
             | Sign in with Google
       else
         li.nav-item.dropdown(class=(title === 'Account Management') ? 'active' : undefined)
-          a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
+          a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button')
             if user.picture
-              img(src=user.picture)
+              img(src=user.picture).pr-2
             else
               img(src=user.gravatar(60))
             span= user.name || user.email || user.id
             i.caret
-          ul.dropdown-menu
+          ul.dropdown-menu.dropdown
             li
               a.nav-link(href='/account') My Account
             li.divider

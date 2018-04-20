@@ -138,8 +138,8 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/eta/:mode', etasystemE4.ETAsystem);
 app.get('/eta', etasystemE4.ETAsystem);
-app.post('/eta', etasystemE4.ETAsystem);
-
+app.get('/slack', passportConfig.isAuthenticated, userController.slack);
+app.get('/thanks', passportConfig.isAuthenticated, userController.thanks);
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -148,11 +148,19 @@ app.get('/auth/google', passport.authenticate('google', {
   scope: 'profile email'
 }));
 app.get('/auth/google/callback', passport.authenticate('google', {
-  failureRedirect: '/login'
+  failureRedirect: '/'
 }), (req, res) => {
-  res.redirect(req.session.returnTo || '/');
+  res.redirect('/slack');
 });
 
+app.get('/auth/slack', passport.authorize('slack', {
+  scope: 'profile email'
+}));
+app.get('/auth/slack/callback', passport.authorize('slack', {
+  failureRedirect: '/slack'
+}), (req, res) => {
+  res.redirect('/thanks');
+});
 /**
  * 404 error route.
  */

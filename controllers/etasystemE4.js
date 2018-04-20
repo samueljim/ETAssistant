@@ -41,10 +41,7 @@ exports.ETAsystem = (req, res) => {
     if (!err) {
       console.log(distances.rows[0].elements[0]);
       if (distances.rows[0].elements[0].status == 'OK') {
-        res.render('etademo', {
-          title: 'ETA DEMO',
-          eta: distances.rows[0].elements[0]
-        });
+
       }
     } else {
       res.status(500);

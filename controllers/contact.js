@@ -50,7 +50,7 @@ exports.postContact = (req, res) => {
   }
 
   const mailOptions = {
-    to: 'me@samuejim.com',
+    to: 'me@samueljim.com',
     from: `${fromName} <${fromEmail}>`,
     subject: 'Contact Form | ETAssistant',
     text: req.body.message

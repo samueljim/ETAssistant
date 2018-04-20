@@ -300,6 +300,21 @@ exports.postReset = (req, res, next) => {
     .catch(err => next(err));
 };
 
+exports.slack = (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+  res.render('slack', {
+    title: 'Add slack account please',
+  });
+}
+
+exports.thanks = (req, res) => {
+  res.render('thanks', {
+    title: 'Thanks for joining',
+  });
+}
+
 /**
  * GET /forgot
  * Forgot Password page.
