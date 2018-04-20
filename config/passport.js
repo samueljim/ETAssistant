@@ -1,7 +1,7 @@
 const passport = require('passport');
 const request = require('request');
 const { Strategy: LocalStrategy } = require('passport-local');
-const SlackStrategy = require('passport-slack').Strategy;
+const SlackStrategy = require('passport-slack-oauth2').Strategy;
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
 
 const User = require('../models/User');
@@ -107,7 +107,7 @@ passport.use(new SlackStrategy({
       user.name = user.name || profile.displayName;
       user.picture = user.picture || profile._json.image.url;
       user.save((err) => {
-        req.flash('info', { msg: 'Google account has been linked.' });
+        req.flash('info', { msg: 'Slack account has been linked.' });
         done(err, user);
       });
     });

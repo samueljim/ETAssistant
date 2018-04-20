@@ -153,10 +153,8 @@ app.get('/auth/google/callback', passport.authenticate('google', {
   res.redirect('/slack');
 });
 
-app.get('/auth/slack', passport.authorize('slack', {
-  scope: 'profile email'
-}));
-app.get('/auth/slack/callback', passport.authorize('slack', {
+app.get('/auth/slack', passport.authorize('Slack'));
+app.get('/auth/slack/callback', passport.authorize('Slack', {
   failureRedirect: '/slack'
 }), (req, res) => {
   res.redirect('/thanks');
