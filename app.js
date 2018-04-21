@@ -146,13 +146,10 @@ app.get('/about', about.index);
 /**
  * OAuth authentication routes. (Sign in)
  */
-app.get('/step1', passport.authorize('google', {
+app.get('/auth/google', passport.authenticate('google', {
   scope: 'profile email'
 }));
-app.get('/auth/google', passport.authorize('google', {
-  scope: 'profile email'
-}));
-app.get('/auth/google/callback', passport.authorize('google', {
+app.get('/auth/google/callback', passport.authenticate('google', {
   failureRedirect: '/'
 }), (req, res) => {
   res.redirect('/slack');

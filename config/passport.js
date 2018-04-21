@@ -61,69 +61,45 @@ passport.use(new GoogleStrategy({
   passReqToCallback: true
 }, (req, accessToken, refreshToken, profile, done) => {
   if (req.user) {
-    User.findOne({
-      google: profile.id
-    }, (err, existingUser) => {
-      if (err) {
-        return done(err);
-      }
+    User.findOne({ google: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
       if (existingUser) {
-        req.flash('errors', {
-          msg: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.'
-        });
+        req.flash('errors', { msg: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         done(err);
       } else {
         User.findById(req.user.id, (err, user) => {
-          if (err) {
-            return done(err);
-          }
+          if (err) { return done(err); }
           user.google = profile.id;
-          user.tokens.push({
-            kind: 'google',
-            accessToken
-          });
+          user.tokens.push({ kind: 'google', accessToken });
           user.name = user.name || profile.displayName;
           user.picture = user.picture || profile._json.image.url;
+
           user.save((err) => {
-            req.flash('info', {
-              msg: 'Google account has been linked.'
-            });
+            req.flash('info', { msg: 'Google account has been linked.' });
             done(err, user);
           });
         });
       }
     });
   } else {
-    User.findOne({
-      google: profile.id
-    }, (err, existingUser) => {
-      if (err) {
-        return done(err);
-      }
+    User.findOne({ google: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
       if (existingUser) {
         return done(null, existingUser);
       }
-      User.findOne({
-        email: profile.emails[0].value
-      }, (err, existingEmailUser) => {
-        if (err) {
-          return done(err);
-        }
+      User.findOne({ email: profile.emails[0].value }, (err, existingEmailUser) => {
+        if (err) { return done(err); }
         if (existingEmailUser) {
-          req.flash('errors', {
-            msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.'
-          });
+          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' });
           done(err);
         } else {
           const user = new User();
           user.email = profile.emails[0].value;
           user.google = profile.id;
-          user.tokens.push({
-            kind: 'google',
-            accessToken
-          });
+          user.tokens.push({ kind: 'google', accessToken });
           user.name = profile.displayName;
           user.picture = profile._json.image.url;
+
           user.save((err) => {
             done(err, user);
           });
