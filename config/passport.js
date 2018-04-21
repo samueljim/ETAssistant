@@ -94,27 +94,31 @@ passport.use(new GoogleStrategy({
 /**
  * Sign in with slack.
  */
-passport.use(new SlackStrategy({
-  clientID: process.env.SLACK_CLIENT_ID,
-  clientSecret: process.env.SLACK_SECRET,
-  passReqToCallback: true
-}, (req, accessToken, refreshToken, profile, done) => {
-  if (req.user) {
-    User.findById(req.user.id, (err, user) => {
-      if (err) { return done(err); }
-      user.google = profile.id;
-      user.tokens.push({ kind: 'google', accessToken });
-      user.name = user.name || profile.displayName;
-      user.picture = user.picture || profile._json.image.url;
-      user.save((err) => {
-        req.flash('info', { msg: 'Slack account has been linked.' });
-        done(err, user);
-      });
-    });
-  } else {
-    return res.redirect('/');
-  }
-}));
+// passport.use(new SlackStrategy({
+//   clientID: process.env.SLACK_CLIENT_ID,
+//   clientSecret: process.env.SLACK_SECRET,
+//   passReqToCallback: true,
+//   scope: ['channels:read', 'chat:write:user']
+// }, (req, accessToken, refreshToken, done) => {
+//   if (req.user) {
+//     User.findById(req.user.id, (err, user) => {
+//       if (err) { return done(err); }
+//       // user.slack = profile.id;
+//       user.tokens.push({ kind: 'slack', accessToken });
+//       user.tokens.push({ kind: 'slackRefreshToken', refreshToken });
+//       // user.name = user.name || profile.displayName;
+//       // user.picture = user.picture || profile._json.image.url;
+//       user.save((err) => {
+//         req.flash('info', { msg: 'Slack account has been linked.' });
+//         done(err, user);
+//       });
+//     });
+//   } else {
+//     return res.redirect('/');
+//   }
+// }));
+
+
 /**
  * Login Required middleware.
  */

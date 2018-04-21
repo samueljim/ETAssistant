@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
+const { WebClient } = require('@slack/client');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -315,6 +316,28 @@ exports.thanks = (req, res) => {
   });
 }
 
+exports.slackCallback = (req, res) => {
+  const client = new WebClient();
+  // console.log(req.query.code);
+  client.oauth.access({
+    client_id: process.env.SLACK_CLIENT_ID,
+    client_secret: process.env.SLACK_SECRET,
+    code: req.query.code
+  }).then((output) => {
+    User.findById(req.user.id, (err, user) => {
+      if (err) {
+        console.error(err);
+        return res.status(500);
+       }
+      user.slackToken = output.access_token;
+      user.tokens.push({ kind: 'slack', accessToken: output.access_token });
+      user.save((err) => {
+        req.flash('info', { msg: 'Slack account has been linked.' });
+        res.redirect('/thanks');
+      });
+    });
+  }).catch(console.error);
+}
 /**
  * GET /forgot
  * Forgot Password page.

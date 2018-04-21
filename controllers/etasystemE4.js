@@ -1,7 +1,6 @@
 var distance = require('google-distance-matrix');
-const {
-  SlackOAuthClient
-} = require('messaging-api-slack');
+const { WebClient } = require('@slack/client');
+
 distance.key(process.env.GOOGLEDISTANCEAPI);
 
 exports.ETAsystem = (req, res) => {
@@ -18,33 +17,44 @@ exports.ETAsystem = (req, res) => {
     req.params.mode = 'driving';
   }
 
-  var thingsToAvoid = 'tolls';
-  var apiForSlack;
+  // var thingsToAvoid = 'tolls';
 
-  distance.avoid(thingsToAvoid);
+  // distance.avoid(thingsToAvoid);
 
   distance.mode(modeOfTransport);
 
-  const client = SlackOAuthClient.connect(
-    apiForSlack
-  );
+  var apiForSlack = req.user.slackToken;
+  console.log(apiForSlack);
+  const web = new WebClient(apiForSlack);
 
-  client.getChannelList().then(res => {
-    console.log(res);
-    // [
-    //   { ... },
-    //   { ... },
-    // ]
-  });
+  web.channels.list()
+    .then((res) => {
+      distance.matrix(origins, destinations, function (err, distances) {
+        if (!err) {
+          console.log(distances.rows[0].elements[0]);
+          if (distances.rows[0].elements[0].status == 'OK') {
+            var time = distances.rows[0].elements[0].duration.text;
+            var timeValue = distances.rows[0].elements[0].duration.value;
+            var distance =  distances.rows[0].elements[0].distance.text;
+            var distanceValue =  distances.rows[0].elements[0].distance.value;
 
-  distance.matrix(origins, destinations, function (err, distances) {
-    if (!err) {
-      console.log(distances.rows[0].elements[0]);
-      if (distances.rows[0].elements[0].status == 'OK') {
+            var message = 'Hey everyone, I\'m running late!\nI will be there in '
+            + time + ' sorry for the delay' +
+            + '\n i am ' + distance + ' from work.'
 
-      }
-    } else {
-      res.status(500);
-    }
+            web.chat.postMessage({ channel: res.channels[0].id, text: message })
+            .then((res) => {
+              // `res` contains information about the posted message
+              console.log('Message sent: ', res.ts);
+            })
+            .catch(console.error);
+          }
+        } else {
+          res.status(500);
+        }
+    })
+    .catch(console.error);
+
+
   });
 }

@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   slack: String,
   google: String,
   tokens: Array,
+  slackToken: String,
 
   work: String,
   modeOfTransportation: { type: String, default: 'driving' },
