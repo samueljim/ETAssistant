@@ -1,5 +1,7 @@
 var distance = require('google-distance-matrix');
-const { WebClient } = require('@slack/client');
+const {
+  WebClient
+} = require('@slack/client');
 
 distance.key(process.env.GOOGLEDISTANCEAPI);
 
@@ -30,31 +32,51 @@ exports.ETAsystem = (req, res) => {
   web.channels.list()
     .then((res) => {
       distance.matrix(origins, destinations, function (err, distances) {
-        if (!err) {
-          console.log(distances.rows[0].elements[0]);
-          if (distances.rows[0].elements[0].status == 'OK') {
-            var time = distances.rows[0].elements[0].duration.text;
-            var timeValue = distances.rows[0].elements[0].duration.value;
-            var distance =  distances.rows[0].elements[0].distance.text;
-            var distanceValue =  distances.rows[0].elements[0].distance.value;
+          if (!err) {
+            console.log(distances.rows[0].elements[0]);
+            if (distances.rows[0].elements[0].status == 'OK') {
+              var time = distances.rows[0].elements[0].duration.text;
+              var timeValue = distances.rows[0].elements[0].duration.value;
+              var distance = distances.rows[0].elements[0].distance.text;
+              var distanceValue = distances.rows[0].elements[0].distance.value;
 
-            var message = 'Hey everyone, I\'m running late!\nI will be there in '
-            + time + ' sorry for the delay' +
-            + '\n i am ' + distance + ' from work.'
+              if (timeValue <= 0) {
+                var message = 'I just arrived'
+              } else if (timeValue <= 5) {
+                var message = 'I\'m only five seconds out'
+              } else if (timeValue >= 25) {
+                var message = 'stick it up ya ass'
+              }
+              //else if () {}
+              //else if () {}
+              //else if () {}
+              //else if () {}
+              else {
+                var message = 'Hey everyone, I\'m running late!\nI will be there in '
+              }
 
-            web.chat.postMessage({ channel: res.channels[0].id, text: message })
-            .then((res) => {
-              // `res` contains information about the posted message
-              console.log('Message sent: ', res.ts);
-            })
-            .catch(console.error);
+
+
+              +
+              time + ' sorry for the delay' +
+                +'\n i am ' + distance + ' from work.'
+
+              web.chat.postMessage({
+                  channel: res.channels[0].id,
+                  text: message
+                })
+                .then((res) => {
+                  // `res` contains information about the posted message
+                  console.log('Message sent: ', res.ts);
+                })
+                .catch(console.error);
+            }
+          } else {
+            res.status(500);
           }
-        } else {
-          res.status(500);
-        }
-    })
-    .catch(console.error);
+        })
+        .catch(console.error);
 
 
-  });
+    });
 }
