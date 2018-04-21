@@ -14,8 +14,9 @@ block content
           label.col-sm-2.col-form-label(for='home') Home
           #locationField2
             input.form-control#autocomplete2(placeholder='Enter your work address', name='home' onfocus='geolocate()', type='text')
+        .col-sm-10
+          button.btn-lg.btn-primary.mt-4(type='submit') Submit
       .form-group.row
-        button.btn-lg.btn-primary.mb-2(type='submit') Submit
 
     script.
       function initAutocomplete() {
