@@ -67,7 +67,7 @@ exports.ETAsystem = (req, res) => {
   destinations = [destinations];
   if (req.body.latitude && req.body.longitude) {
     // origins = [req.body.latitude,req.body.longitude]
-    origins = ['', '' + req.body.latitude + ',' + req.body.longitude+ ''];
+    origins = ['Brisbane', '' + req.body.latitude + ',' + req.body.longitude+ ''];
     console.warn(origins);
   }
   web.channels.list()
