@@ -64,7 +64,7 @@ block content
           p: a.text-danger(href='/account/unlink/google') Unlink your Google account
         else
           p: a(href='/auth/google') Link your Google account
-        if user.slack
+        if user.slackToken
           p: a.text-danger(href='/account/unlink/slack') Unlink your Slack account
         else
           p: a(href='/auth/slack') Link your Slack account
