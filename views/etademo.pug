@@ -1,84 +1,30 @@
 extends layout
 
 block content
-  h1.display-3 Test the API
+  h1.display-3 Please enter addresses
   p.lead
     | Try Saying to your google assistant
   blockquote.blockquote
   p.mb-0 "Hey google, tell my boss i'm running late"
   hr.my-4
-  style.
-    #map {
-      height: 100%;
-    }
-    /* Optional: Makes the sample page fill the window. */
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
   p test that slack will post here
   form(method='POST')
     .form-group
-      label Where are you now?
-
-      #map
-      label.my-1.mr-2(for='inlineFormCustomSelectPref') Choose how you are moving
-      select.form-control#inlineFormCustomSelectPref.custom-select.my-1.mr-sm-2(name='mode')
-        option(value='driving') Driving
-        option(value='walking') Walking
-        option(value='bicycling') Bike
-        option(value='transit') Bus
-      input.form-control(type='text', name='latitude' id='latitude')
-      input.form-control(type='text', name='longitude' id='longitude')
+      input(type='hidden', name='latitude' id='latitude')
+      input(type='hidden', name='longitude' id='longitude')
       input(type='hidden', name='_csrf', value=_csrf)
-      .col-sm-offset-3.col-sm-4.pt-3
+      .col-sm-offset-3.col-sm-4
         button.btn.btn-danger(type='submit')
-          i.fas.fa-external-link-alt.fa-sm.pr-2
+          i.fas.fa-trash-alt.fa-sm.pr-2
           | Test
-  .col-sm-offset-3.col-sm-4.pt-3
-    a.btn.btn-danger(href='/locations')
-      i.fas.fa-edit.pr-2
-      | Edit work location
   script.
-    var map, infoWindow;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 16
-        });
-        infoWindow = new google.maps.InfoWindow;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = long;
 
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
-            document.getElementById('latitude').value = lat;
-            document.getElementById('longitude').value = long;
-
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
-            infoWindow.open(map);
-            map.setCenter(pos);
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-      }
-
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-      }
+      });
+    }
