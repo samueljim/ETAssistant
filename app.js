@@ -144,21 +144,20 @@ app.get('/thanks', passportConfig.isAuthenticated, userController.thanks);
 /**
  * OAuth authentication routes. (Sign in)
  */
-app.get('/auth/google', passport.authenticate('google', {
+app.get('/step1', passport.authorize('google', {
   scope: 'profile email'
 }));
-app.get('/auth/google/callback', passport.authenticate('google', {
+app.get('/auth/google', passport.authorize('google', {
+  scope: 'profile email'
+}));
+app.get('/auth/google/callback', passport.authorize('google', {
   failureRedirect: '/'
 }), (req, res) => {
   res.redirect('/slack');
 });
 
-app.get('/auth/slack', passport.authorize('Slack'));
-app.get('/auth/slack/callback', passport.authorize('Slack', {
-  failureRedirect: '/slack'
-}), (req, res) => {
-  res.redirect('/thanks');
-});
+app.get('/auth/slack/callback',  passportConfig.isAuthenticated, userController.slackCallback);
+
 /**
  * 404 error route.
  */
