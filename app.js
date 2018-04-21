@@ -39,6 +39,7 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
 const etasystemE4 = require('./controllers/etasystemE4')
+const about = require('./controllers/about');
 
 /**
  * API keys and Passport configuration.
@@ -140,6 +141,7 @@ app.get('/eta/:mode', etasystemE4.ETAsystem);
 app.get('/eta', etasystemE4.ETAsystem);
 app.get('/slack', passportConfig.isAuthenticated, userController.slack);
 app.get('/thanks', passportConfig.isAuthenticated, userController.thanks);
+app.get('/about', about.index);
 
 /**
  * OAuth authentication routes. (Sign in)

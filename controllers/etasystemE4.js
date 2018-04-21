@@ -1,13 +1,14 @@
 var distance = require('google-distance-matrix');
-const {
-  WebClient
-} = require('@slack/client');
+var { WebClient } = require('@slack/client');
 
 distance.key(process.env.GOOGLEDISTANCEAPI);
 
 exports.ETAsystem = (req, res) => {
-  var origins = ['San Francisco CA'];
-  var destinations = ['New  York NY'];
+  var origins = req.user.home;
+  if (req.params.location) {
+    var origins = req.params.location;
+  }
+  var destinations = req.user.work;
   var modeOfTransport = 'driving';
   if (req.params.mode = 'walking') {
     modeOfTransport = req.params.mode;
@@ -20,7 +21,6 @@ exports.ETAsystem = (req, res) => {
   }
 
   // var thingsToAvoid = 'tolls';
-
   // distance.avoid(thingsToAvoid);
 
   distance.mode(modeOfTransport);
@@ -30,7 +30,7 @@ exports.ETAsystem = (req, res) => {
   const web = new WebClient(apiForSlack);
 
   web.channels.list()
-    .then((res) => {
+    .then((slack) => {
       distance.matrix(origins, destinations, function (err, distances) {
           if (!err) {
             console.log(distances.rows[0].elements[0]);
@@ -55,28 +55,18 @@ exports.ETAsystem = (req, res) => {
                 var message = 'Hey everyone, I\'m running late!\nI will be there in '
               }
 
-
-
-              +
-              time + ' sorry for the delay' +
-                +'\n i am ' + distance + ' from work.'
-
-              web.chat.postMessage({
-                  channel: res.channels[0].id,
-                  text: message
-                })
-                .then((res) => {
-                  // `res` contains information about the posted message
-                  console.log('Message sent: ', res.ts);
-                })
-                .catch(console.error);
-            }
-          } else {
-            res.status(500);
+            web.chat.postMessage({ channel: slack.channels[0].id, text: message })
+            .then((slackMessage) => {
+              console.log('Message sent: ', slackMessage.ts);
+              return res.render('etademo', {
+                title: 'Message sent',
+                eta: distances.rows[0].elements[0]
+              });
+            }).catch(console.error);
           }
-        })
-        .catch(console.error);
-
-
+        } else {
+          res.status(500);
+        }
     });
+  }).catch(console.error);
 }
