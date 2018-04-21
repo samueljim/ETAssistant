@@ -141,8 +141,8 @@ app.get('/eta/:mode', etasystemE4.ETAsystem);
 app.get('/eta', etasystemE4.ETAsystemPage);
 app.post('/eta', etasystemE4.ETAsystem);
 app.get('/slack', passportConfig.isAuthenticated, userController.slack);
-app.get('/thanks', passportConfig.isAuthenticated, userController.thanks);
-app.post('/thanks', passportConfig.isAuthenticated, userController.postAddress);
+app.get('/locations', passportConfig.isAuthenticated, userController.thanks);
+app.post('/locations', passportConfig.isAuthenticated, userController.postAddress);
 app.get('/about', about.index);
 
 /**

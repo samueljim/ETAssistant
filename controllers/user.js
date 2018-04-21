@@ -380,7 +380,7 @@ exports.slack = (req, res) => {
 
 exports.thanks = (req, res) => {
   res.render('thanks', {
-    title: 'Thanks for joining',
+    title: 'Required locations',
   });
 }
 exports.postAddress = (req, res, next) => {
@@ -426,7 +426,7 @@ exports.slackCallback = (req, res) => {
         req.flash('info', {
           msg: 'Slack account has been linked.'
         });
-        res.redirect('/thanks');
+        res.redirect('/locations');
       });
     });
   }).catch(console.error);
