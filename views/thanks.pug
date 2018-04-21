@@ -8,7 +8,7 @@ block content
         .col-sm-10
           label.col-sm-2.col-form-label(for='work') Work
           #locationField
-            input.form-control#autocomplete(placeholder='Enter your home address', name='work' onfocus='geolocate()', type='text')
+            input.form-control#autocomplete(placeholder='Enter your home address', name='work' value=user.work onfocus='geolocate()', type='text')
             .form-group.row
         .col-sm-10
           label.col-sm-2.col-form-label(for='home') Home
