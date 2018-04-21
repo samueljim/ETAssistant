@@ -10,9 +10,21 @@ block content
   p test that slack will post here
   form(method='POST')
     .form-group
-      input(type='hidden', name='location')
+      input(type='hidden', name='latitude' id='latitude')
+      input(type='hidden', name='longitude' id='longitude')
       input(type='hidden', name='_csrf', value=_csrf)
       .col-sm-offset-3.col-sm-4
         button.btn.btn-danger(type='submit')
           i.fas.fa-trash-alt.fa-sm.pr-2
           | Test
+  script.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = long;
+
+      });
+    }
