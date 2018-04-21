@@ -41,11 +41,11 @@ exports.ETAsystem = (req, res) => {
               var distanceValue = distances.rows[0].elements[0].distance.value;
 
               if (timeValue <= 0) {
-                var message = 'I just arrived'
+                var message = 'I just arrived '
               } else if (timeValue <= 5) {
-                var message = 'I\'m only five seconds out'
+                var message = 'I\'m only five seconds out '
               } else if (timeValue >= 25) {
-                var message = 'stick it up ya ass'
+                var message = 'longer than 25 '
               }
               //else if () {}
               //else if () {}
@@ -54,6 +54,7 @@ exports.ETAsystem = (req, res) => {
               else {
                 var message = 'Hey everyone, I\'m running late!\nI will be there in '
               }
+<<<<<<< Updated upstream
 
             web.chat.postMessage({ channel: slack.channels[0].id, text: message })
             .then((slackMessage) => {
@@ -63,6 +64,25 @@ exports.ETAsystem = (req, res) => {
                 eta: distances.rows[0].elements[0]
               });
             }).catch(console.error);
+=======
+              message
+                +
+                time + ' sorry for the delay' +
+                +'\n i am ' + distance + ' from work.'
+
+              web.chat.postMessage({
+                  channel: res.channels[0].id,
+                  text: message
+                })
+                .then((res) => {
+                  // `res` contains information about the posted message
+                  console.log('Message sent: ', res.ts);
+                })
+                .catch(console.error);
+            }
+          } else {
+            res.status(500);
+>>>>>>> Stashed changes
           }
         } else {
           res.status(500);
