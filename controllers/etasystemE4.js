@@ -41,14 +41,14 @@ exports.ETAsystem = (req, res) => {
 
   } else if (req.body.mode == 'bicycling') {
     modeOfTransport = req.body.mode;
-    transport = ' riding my bike ';
+    transport = 'riding my bike ';
 
   } else if (req.body.mode == 'transit') {
     modeOfTransport = req.body.mode;
-    transport = ' catching a bus ';
+    transport = 'catching a bus ';
   } else {
     modeOfTransport = 'driving';
-    transport = ' driving  ';
+    transport = 'driving  ';
   }
 
   // var thingsToAvoid = 'tolls';
