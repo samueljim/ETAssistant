@@ -38,7 +38,7 @@ dotenv.load({
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
-const etasystemE4 = require('./controllers/etasystemE4')
+const etasystemE4 = require('./controllers/etasystemE4');
 const about = require('./controllers/about');
 
 /**
@@ -158,7 +158,7 @@ app.get('/auth/google/callback', passport.authorize('google', {
   res.redirect('/slack');
 });
 
-app.get('/auth/slack/callback',  passportConfig.isAuthenticated, userController.slackCallback);
+app.get('/auth/slack/callback', passportConfig.isAuthenticated, userController.slackCallback);
 
 /**
  * 404 error route.
