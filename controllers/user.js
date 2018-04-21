@@ -383,6 +383,26 @@ exports.thanks = (req, res) => {
     title: 'Thanks for joining',
   });
 }
+exports.postAddress = (req, res, next) => {
+  console.warn(req.body);
+
+  User.findById(req.user.id, (err, user) => {
+    if (err) {
+      return next(err);
+    }
+    user.home = req.body.home || '';
+    user.work = req.body.work || '';
+    user.save((err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash('success', {
+        msg: 'Address has been updated.'
+      });
+      res.redirect('/eta');
+    });
+  });
+}
 
 exports.slackCallback = (req, res) => {
   const client = new WebClient();

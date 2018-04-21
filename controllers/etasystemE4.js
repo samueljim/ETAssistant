@@ -6,20 +6,32 @@ var {
 distance.key(process.env.GOOGLEDISTANCEAPI);
 
 exports.ETAsystem = (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+  if (!req.user.work) {
+    return res.redirect('/');
+  }
+  if (!req.user.home) {
+    return res.redirect('/');
+  }
+  if (!req.user.slackToken) {
+    return res.redirect('/');
+  }
   var origins = req.user.home;
   if (req.params.location) {
     var origins = req.params.location;
   }
   var destinations = req.user.work;
-  var modeOfTransport = 'driving';
-  if (req.params.mode = 'walking') {
+  var modeOfTransport = req.user.modeOfTransport;
+  if (req.params.mode == 'walking') {
     modeOfTransport = req.params.mode;
-  } else if (req.params.mode = 'bicycling') {
+  } else if (req.params.mode == 'bicycling') {
     modeOfTransport = req.params.mode;
-  } else if (req.params.mode = 'transit') {
+  } else if (req.params.mode == 'transit') {
     modeOfTransport = req.params.mode;
   } else {
-    req.params.mode = 'driving';
+    modeOfTransport = 'driving';
   }
 
   // var thingsToAvoid = 'tolls';
@@ -63,9 +75,11 @@ exports.ETAsystem = (req, res) => {
               })
               .then((slackMessage) => {
                 console.log('Message sent: ', slackMessage.ts);
+                req.flash('success', {
+                  msg: 'Sent!'
+                });
                 return res.render('etademo', {
-                  title: 'Message sent',
-                  eta: distances.rows[0].elements[0]
+                  title: 'Message sent'
                 });
               }).catch(console.error);
           }
@@ -74,4 +88,23 @@ exports.ETAsystem = (req, res) => {
         }
       });
     }).catch(console.error);
+}
+
+exports.ETAsystemPage = (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+  if (!req.user.work) {
+    return res.redirect('/');
+  }
+  if (!req.user.home) {
+    return res.redirect('/');
+  }
+  if (!req.user.slackToken) {
+    return res.redirect('/');
+  }
+  return res.render('etademo', {
+    title: 'Test ETA to Slack',
+    modeOfTransport: req.user.modeOfTransport
+  });
 }

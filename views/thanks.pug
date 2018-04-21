@@ -8,15 +8,20 @@ block content
     blockquote.blockquote
     p.mb-0 "Hey google, tell my boss i'm running late"
     hr.my-4
-    form(type='post' action='/address')
+    form(method='post')
       .form-group.row
         .col-sm-10
-          label.col-sm-2.col-form-label(for='Address') Address
+          label.col-sm-2.col-form-label(for='work') Work
           #locationField
-            input.form-control#autocomplete(placeholder='Enter your address', name='Address' onfocus='geolocate()', type='text')
+            input.form-control#autocomplete(placeholder='Enter your home address', name='work' onfocus='geolocate()', type='text')
+            .form-group.row
+        .col-sm-10
+          label.col-sm-2.col-form-label(for='home') Home
+          #locationField2
+            input.form-control#autocomplete2(placeholder='Enter your work address', name='home' onfocus='geolocate()', type='text')
       .form-group.row
         button.btn-lg.btn-primary.mb-2(type='submit') Submit
-   
+
     script.
       function initAutocomplete() {
         // Create the autocomplete object, restricting the search to geographical
@@ -24,9 +29,12 @@ block content
         autocomplete = new google.maps.places.Autocomplete(
             /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
             {types: ['geocode']});
-
+        autocomplete2 = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete2')),
+            {types: ['geocode']});
         // When the user selects an address from the dropdown, populate the address
         // fields in the form.
         autocomplete.addListener('place_changed', fillInAddress);
+        autocomplete2.addListener('place_changed', fillInAddress);
       }
     script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCHeLg2ErCDiBQJq7LDQAonbddxza3IOKY&libraries=places&callback=initAutocomplete', async='', defer='')

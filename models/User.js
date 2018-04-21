@@ -15,7 +15,9 @@ const userSchema = new mongoose.Schema({
   slackToken: String,
 
   work: String,
-  modeOfTransportation: { type: String, default: 'driving' },
+  home: String,
+
+  modeOfTransport: { type: String, default: 'driving' },
   tokens: Array,
   picture: String
 }, { timestamps: true });

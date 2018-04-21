@@ -138,9 +138,11 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 // app.post('/account/upload', upload.single('myFile'), passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/eta/:mode', etasystemE4.ETAsystem);
-app.get('/eta', etasystemE4.ETAsystem);
+app.get('/eta', etasystemE4.ETAsystemPage);
+app.post('/eta', etasystemE4.ETAsystem);
 app.get('/slack', passportConfig.isAuthenticated, userController.slack);
 app.get('/thanks', passportConfig.isAuthenticated, userController.thanks);
+app.post('/thanks', passportConfig.isAuthenticated, userController.postAddress);
 app.get('/about', about.index);
 
 /**
