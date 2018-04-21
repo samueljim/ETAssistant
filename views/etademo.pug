@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1.display-3 Please enter addresses
+  h1.display-3 Test the API
   p.lead
     | Try Saying to your google assistant
   blockquote.blockquote
@@ -10,12 +10,13 @@ block content
   p test that slack will post here
   form(method='POST')
     .form-group
-      input(type='hidden', name='latitude' id='latitude')
-      input(type='hidden', name='longitude' id='longitude')
+      label Where are you now?
+      input.form-control(type='text', name='latitude' id='latitude')
+      input.form-control(type='text', name='longitude' id='longitude')
       input(type='hidden', name='_csrf', value=_csrf)
-      .col-sm-offset-3.col-sm-4
+      .col-sm-offset-3.col-sm-4.pt-3
         button.btn.btn-danger(type='submit')
-          i.fas.fa-trash-alt.fa-sm.pr-2
+          i.fas.fa-external-link-alt.fa-sm.pr-2
           | Test
   script.
     if (navigator.geolocation) {

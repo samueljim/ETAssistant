@@ -384,7 +384,7 @@ exports.thanks = (req, res) => {
   });
 }
 exports.postAddress = (req, res, next) => {
-  console.warn(req.body);
+  // console.warn(req.body);
 
   User.findById(req.user.id, (err, user) => {
     if (err) {
@@ -399,7 +399,7 @@ exports.postAddress = (req, res, next) => {
       req.flash('success', {
         msg: 'Address has been updated.'
       });
-      res.redirect('/eta');
+      return res.redirect('/eta');
     });
   });
 }
