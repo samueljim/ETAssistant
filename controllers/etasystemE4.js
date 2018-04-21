@@ -31,10 +31,8 @@ exports.ETAsystem = (req, res) => {
     return res.redirect('/slack');
   }
   var origins = req.user.home;
-  if (req.params.location) {
-    var origins = req.params.location;
-  }
   var destinations = req.user.work;
+
   var modeOfTransport = req.user.modeOfTransport;
   var transport;
   if (req.body.mode == 'walking') {
@@ -56,7 +54,7 @@ exports.ETAsystem = (req, res) => {
   // var thingsToAvoid = 'tolls';
   // distance.avoid(thingsToAvoid);
 
-  distance.traffic_model('best_guess');
+  // distance.traffic_model('best_guess');
   distance.mode(modeOfTransport);
   if (modeOfTransport == 'transit') {
   }
@@ -65,11 +63,9 @@ exports.ETAsystem = (req, res) => {
   const web = new WebClient(apiForSlack);
   origins = [origins];
   destinations = [destinations];
-  if (req.body.latitude && req.body.longitude) {
-    // origins = [req.body.latitude,req.body.longitude]
-    origins = ['Brisbane', '' + req.body.latitude + ',' + req.body.longitude+ ''];
-    console.warn(origins);
-  }
+  console.warn(origins);
+  console.warn(destinations);
+
   web.channels.list()
     .then((slack) => {
       distance.matrix(origins, destinations, function (err, distances) {
@@ -103,7 +99,7 @@ exports.ETAsystem = (req, res) => {
             + dist + transport +  distance;
 
             web.chat.postMessage({
-                channel: slack.channels[0].id,
+                channel: slack.channels[1].id,
                 text: message
               })
               .then((slackMessage) => {
@@ -117,6 +113,7 @@ exports.ETAsystem = (req, res) => {
               }).catch(console.error);
           }
         } else {
+          console.error(err);
           res.status(500);
         }
       });

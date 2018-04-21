@@ -1,5 +1,3 @@
 $(document).ready(() => {
-
-  // Place JavaScript code here...
-
+  setTimeout('$(".alert.alert-dismissible").hide()',5000);
 });
