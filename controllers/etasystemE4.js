@@ -94,10 +94,10 @@ exports.ETAsystemPage = (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/');
   }
-  if (!req.user.work) {
+  if (!req.user) {
     return res.redirect('/');
   }
-  if (!req.user.home) {
+  if (!req.user.work) {
     return res.redirect('/');
   }
   if (!req.user.slackToken) {

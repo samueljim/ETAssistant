@@ -2,17 +2,17 @@ extends layout
 
 block content
   h1.display-3 Please enter addresses
-    p.lead
-      | Try Saying to your google assistant
-    blockquote.blockquote
-    p.mb-0 "Hey google, tell my boss i'm running late"
-    hr.my-4
-    p test that slack will post here
-    form(method='POST')
-      .form-group
-        input(type='hidden', name='location')
-        input(type='hidden', name='_csrf', value=_csrf)
-        .col-sm-offset-3.col-sm-4
-          button.btn.btn-danger(type='submit')
-            i.fas.fa-trash-alt.fa-sm.pr-2
-            | Test
+  p.lead
+    | Try Saying to your google assistant
+  blockquote.blockquote
+  p.mb-0 "Hey google, tell my boss i'm running late"
+  hr.my-4
+  p test that slack will post here
+  form(method='POST')
+    .form-group
+      input(type='hidden', name='location')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .col-sm-offset-3.col-sm-4
+        button.btn.btn-danger(type='submit')
+          i.fas.fa-trash-alt.fa-sm.pr-2
+          | Test
