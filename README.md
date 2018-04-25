@@ -1,4 +1,4 @@
-Samuel Henry
-Marco Jalili
-Matthew Magin
-Sam Tapping
+Samuel Henry <br/>
+Marco Jalili <br/>
+Matthew Magin <br/>
+Sam Tapping <br/>
