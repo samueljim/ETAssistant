@@ -11,6 +11,11 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
         a.nav-link(href='/contact' class=((title === 'Contact') ? 'active' : undefined)) Contact
       li.nav-item
         a.nav-link(href='/status') Status
+      if user
+        if user.slackToken
+          if user.work
+            li.nav-item
+              a.nav-link(href='/eta') Test Eta
     ul.nav.navbar-nav.navbar-right
       if !user
         li.nav-item(class=(title === 'Login') ? 'active' : undefined)

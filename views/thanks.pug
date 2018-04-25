@@ -8,15 +8,15 @@ block content
         .col-sm-10
           label.col-sm-2.col-form-label(for='work') Work
           #locationField
-            input.form-control#autocomplete(placeholder='Enter your home address', name='work' onfocus='geolocate()', type='text')
+            input.form-control#autocomplete(placeholder='Enter your home address', name='work' value=user.work onfocus='geolocate()', type='text')
             .form-group.row
         .col-sm-10
           label.col-sm-2.col-form-label(for='home') Home
           #locationField2
-            input.form-control#autocomplete2(placeholder='Enter your work address', name='home' onfocus='geolocate()', type='text')
+            input.form-control#autocomplete2(placeholder='Enter your work address', name='home' value=user.home onfocus='geolocate()', type='text')
+        .col-sm-10
+          button.btn-lg.btn-primary.mt-4(type='submit') Submit
       .form-group.row
-        button.btn-lg.btn-primary.mb-2(type='submit') Submit
-
     script.
       function initAutocomplete() {
         // Create the autocomplete object, restricting the search to geographical

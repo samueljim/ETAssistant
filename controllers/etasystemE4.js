@@ -6,42 +6,65 @@ var {
 distance.key(process.env.GOOGLEDISTANCEAPI);
 
 exports.ETAsystem = (req, res) => {
-  if (!req.isAuthenticated()) {
+  if (!req.user) {
+    req.flash('error', {
+      msg: 'Sign up please!'
+    });
     return res.redirect('/');
   }
   if (!req.user.work) {
-    return res.redirect('/');
+    req.flash('error', {
+      msg: 'Where do you live and work?'
+    });
+    return res.redirect('/locations');
   }
   if (!req.user.home) {
-    return res.redirect('/');
+    req.flash('error', {
+      msg: 'Where do you live and work?'
+    });
+    return res.redirect('/locations');
   }
   if (!req.user.slackToken) {
-    return res.redirect('/');
+    req.flash('error', {
+      msg: 'Sign up with slack please!'
+    });
+    return res.redirect('/slack');
   }
   var origins = req.user.home;
-  if (req.params.location) {
-    var origins = req.params.location;
-  }
   var destinations = req.user.work;
+
   var modeOfTransport = req.user.modeOfTransport;
-  if (req.params.mode == 'walking') {
-    modeOfTransport = req.params.mode;
-  } else if (req.params.mode == 'bicycling') {
-    modeOfTransport = req.params.mode;
-  } else if (req.params.mode == 'transit') {
-    modeOfTransport = req.params.mode;
+  var transport;
+  if (req.body.mode == 'walking') {
+    modeOfTransport = req.body.mode;
+    transport = ' walking ';
+
+  } else if (req.body.mode == 'bicycling') {
+    modeOfTransport = req.body.mode;
+    transport = 'riding my bike ';
+
+  } else if (req.body.mode == 'transit') {
+    modeOfTransport = req.body.mode;
+    transport = 'catching a bus ';
   } else {
     modeOfTransport = 'driving';
+    transport = 'driving  ';
   }
 
   // var thingsToAvoid = 'tolls';
   // distance.avoid(thingsToAvoid);
 
+  // distance.traffic_model('best_guess');
   distance.mode(modeOfTransport);
-
+  if (modeOfTransport == 'transit') {
+  }
   var apiForSlack = req.user.slackToken;
   console.log(apiForSlack);
   const web = new WebClient(apiForSlack);
+  origins = [origins];
+  destinations = [destinations];
+  console.warn(origins);
+  console.warn(destinations);
 
   web.channels.list()
     .then((slack) => {
@@ -51,26 +74,32 @@ exports.ETAsystem = (req, res) => {
           if (distances.rows[0].elements[0].status == 'OK') {
             var time = distances.rows[0].elements[0].duration.text;
             var timeValue = distances.rows[0].elements[0].duration.value;
+
             var distance = distances.rows[0].elements[0].distance.text;
             var distanceValue = distances.rows[0].elements[0].distance.value;
-
+            console.info(timeValue);
+            console.info(distanceValue);
+            var lateness;
+            var dist;
             if (timeValue <= 0) {
-              var message = 'I just arrived '
-            } else if (timeValue <= 5) {
-              var message = 'I\'m only five seconds out '
-            } else if (timeValue >= 25) {
-              var message = 'longer than 25 '
+              lateness = 'I just arrived '
+            } else if (timeValue < 1800) {
+              lateness = 'I\'m running late!\n';
+            } else if (timeValue >= 1800) {
+              lateness = 'I\'m running really late!\n';
             }
-            //else if () {}
-            //else if () {}
-            //else if () {}
-            //else if () {}
-            else {
-              var message = 'Hey everyone, I\'m running late!\nI will be there in '
+            if (distanceValue <= 10) {
+              dist = ''
+            } else if (distanceValue < 1000) {
+              dist = 'i\'m only ';
+            } else if (distanceValue >= 1000) {
+              dist = 'It\'s going to take a while as i\'m ';
             }
+            var message = 'Hey everyone, \n' + lateness + 'I will be there in ' + time + '\n'
+            + dist + transport +  distance;
 
             web.chat.postMessage({
-                channel: slack.channels[0].id,
+                channel: slack.channels[1].id,
                 text: message
               })
               .then((slackMessage) => {
@@ -84,6 +113,7 @@ exports.ETAsystem = (req, res) => {
               }).catch(console.error);
           }
         } else {
+          console.error(err);
           res.status(500);
         }
       });
@@ -91,17 +121,29 @@ exports.ETAsystem = (req, res) => {
 }
 
 exports.ETAsystemPage = (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/');
-  }
   if (!req.user) {
+    req.flash('error', {
+      msg: 'Sign up please!'
+    });
     return res.redirect('/');
   }
   if (!req.user.work) {
-    return res.redirect('/');
+    req.flash('error', {
+      msg: 'Where do you live and work?'
+    });
+    return res.redirect('/locations');
+  }
+  if (!req.user.home) {
+    req.flash('error', {
+      msg: 'Where do you live and work?'
+    });
+    return res.redirect('/locations');
   }
   if (!req.user.slackToken) {
-    return res.redirect('/');
+    req.flash('error', {
+      msg: 'Sign up with slack please!'
+    });
+    return res.redirect('/slack');
   }
   return res.render('etademo', {
     title: 'Test ETA to Slack',

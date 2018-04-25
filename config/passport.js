@@ -7,6 +7,8 @@ const SlackStrategy = require('passport-slack-oauth2').Strategy;
 const {
   OAuth2Strategy: GoogleStrategy
 } = require('passport-google-oauth');
+const { OAuthStrategy } = require('passport-oauth');
+const { OAuth2Strategy } = require('passport-oauth');
 
 const User = require('../models/User');
 
